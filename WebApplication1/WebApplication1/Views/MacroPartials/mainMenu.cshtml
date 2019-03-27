@@ -1,0 +1,92 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@using Umbraco.Web
+
+@*
+    This snippet displays a list of links of the pages immediately under the top-most page in the content tree.
+    This is the home page for a standard website.
+    It also highlights the current active page/section in the navigation with the CSS class "current".
+*@
+
+
+@{ 
+    var site = Model.Content.Site();
+    
+    // Main Menu
+    var selection = Model.Content.AncestorOrSelf(1).Where("Visible");
+    
+    // Dropdown
+    var projectDropdown = Model.Content.Site().Children.Where("DocumentTypeAlias == \"projectsOverview\"").First().Children.Where("Visible").OrderBy("projectTitle");
+  
+ 
+}
+
+
+<ul class="navbar-nav m1-auto">
+
+    @foreach(var menuItem in site.Children.Where("UmbracoNaviHide == false"))
+    {
+    
+        if (menuItem.Name != "Projekter")
+        {
+      
+            <li class="@(menuItem.IsAncestorOrSelf(Model.Content) ? "current" : null)">
+                <a class="nav-link" href="@menuItem.Url">@menuItem.Name</a>
+            </li>
+            
+        }
+        else
+        {
+          <li class="nav-item dropdown @(menuItem.IsAncestorOrSelf(Model.Content) ? " active" : null)">
+           <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Alle Projekter<span class="caret"></span></a>
+           <ul class="dropdown-menu" role="menu">
+                   
+            @foreach (var dropdownItem in menuItem.Children().Where(x => x.IsVisible()))
+            { 
+            if (dropdownItem.DocumentTypeAlias == "projectItem")
+                            {
+             if (umbraco.library.GetPreValueAsString(dropdownItem.GetPropertyValue<int>("projectStatus")) == "Completed")
+             {
+                    <li>
+                    <a class="dropdown-item" href="@dropdownItem.Url">@dropdownItem.Name</a>
+                    </li>    
+              }          
+            }
+             }
+           </ul>           
+         </li>
+    }
+}
+</ul>
+
+          
+   
+   @*      <div class="dropdown">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+               Færdige Projekter
+            </button>
+             <div class="dropdown-menu">
+        
+   
+       @foreach (var dropdownItem in projectDropdown)
+        { 
+        
+            if(dropdownItem.DocumentTypeAlias == "projectItem") 
+            {
+                 if (umbraco.library.GetPreValueAsString(dropdownItem.GetPropertyValue<int>("projectStatus")) == "Completed")
+                 {
+                   <a class="dropdown-item" href="@dropdownItem.Url">@dropdownItem.Name</a>
+                 }
+            }
+            
+            
+            else
+            {
+            <a class="dropdown-item" href="@dropdownItem.Url">@dropdownItem.Name</a>
+            }   
+         
+            }
+            
+              </div>
+        </div> *@
+   
+

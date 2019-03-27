@@ -1,0 +1,46 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.ActiveMembers>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+
+@{
+	Layout = "Master.cshtml";
+	var memberService = ApplicationContext.Current.Services.MemberService;
+    var members = memberService.GetMembersByGroup("Active");
+   
+}
+
+<br>
+<br>
+
+<h1>Active Members</h1>
+<br />
+
+@foreach(var member in members) {
+
+    var propertyValue = member.GetValue("photophoto");
+    var media = Umbraco.TypedMedia(propertyValue);
+    var url = media == null ? string.Empty : media.Url;
+  
+  
+    <h5 class="card-text mb-0">@member.Name</h5>
+
+       <p>@member.GetValue("address") <br />
+          @member.GetValue("city") <br >
+        <a href="mailto:@member.Email" class="tile-link">@member.Email</a> </p> 
+         <img style="border-radius: 50%;" src="@Umbraco.TypedMember(member.Id).GetCropUrl("photo", "memberphoto")" />
+       <br />
+       <br />
+        <b>Skills</b> 
+        {
+            if (member.GetValue("skills") != null) {
+            string[] skills = member.GetValue("skills").ToString().Split(',');
+            
+            string skillString = 
+            string.Join(", ", from skill in skills
+            select umbraco.library.GetPreValueAsString(Convert.ToInt32(skill)));
+            <p class="card-text text-uppercase text-muted">@skillString</p> 
+            <hr />
+        }
+
+    }
+<br><br>
+}

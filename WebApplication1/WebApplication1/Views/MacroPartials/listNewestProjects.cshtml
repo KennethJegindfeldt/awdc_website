@@ -1,0 +1,40 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@using Umbraco.Web
+
+	@{  
+
+        int numOfProjects = Convert.ToUInt16(Model.MacroParameters["numOfProjects"]);
+
+        var items = Model.Content.Site().Children
+            .Where("DocumentTypeAlias == \"projectsOverview\"").First()
+            .Children
+            //.Where("Visible && projectStatus.Contains(\"19\")")
+            .OrderBy("CreateDate desc").Take(numOfProjects);
+	}
+
+<br />
+
+   <ul>
+    @foreach (var item in items) 
+    {
+        <div class="col-lg-12 col-mb-12">
+          <div class="card h-25">
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="@item.Url">@item.Name</a>
+              </h4>
+              <hr />
+               <b><a href="@item.Url">Se Projekt</a></b>
+            </div>
+          </div>
+        </div>
+
+    <br />
+     }   
+    </ul> 
+
+
+
+    
+    
+   

@@ -1,0 +1,16 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.ArticleItem>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "Master.cshtml";
+}
+
+
+<div class="container">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body p-5">
+      <h1 class="font-weight-light">@Umbraco.Field("articleTitle")</h1>
+      <p class="lead">@Umbraco.Field("articleContent")</p>
+      <a href="../articleOverview">Tilbage</a>
+    </div>
+  </div>
+</div>

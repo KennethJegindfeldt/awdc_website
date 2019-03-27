@@ -1,0 +1,10 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.ForbiddenAccess>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "Master.cshtml";
+}
+
+<div class="container">
+ <h1 class="text-center">@Umbraco.Field("fejlmeddelse")</h1>
+ <a href="/">Tilbage til forsiden</a>
+</div>
